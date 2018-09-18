@@ -16,7 +16,7 @@ class SerialWrapper:
         self.ser.write(data.encode())
 
 def main():
-    #ser = SerialWrapper('/dev/ttyACM0')
+    ser = SerialWrapper('/dev/ttyACM0')
     SPREADSHEET_IDS = '1OZGMLB5fagiBeAG8-FHYKJ7YbWZvw7fJonjZjkVyDYI'
     SPREADSHEET_LOG = '1bpBm-T6QB6inECZl_hKLomBEZMoUAe5GaMM-yyHtoG4'
     RANGE_IDS = 'Form Responses 1!A2:D'
@@ -37,7 +37,7 @@ def main():
                 for x in values:
                     if (any(id in j for j in x)):
                         s = "Welcome %s to %s!" % (x[1], x[3])
-                        #ser.sendData(s)
+                        ser.sendData(s)
 
                         now = time.strftime(f'%m/%d/%Y %H:%M:%S', time.localtime())
                         resource = {
