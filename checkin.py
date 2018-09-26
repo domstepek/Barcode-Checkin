@@ -1,4 +1,3 @@
-import serial
 import datetime
 import re
 from googleapiclient.discovery import build
@@ -7,17 +6,7 @@ from google.oauth2 import service_account
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets'] # Read and write permissions for program
 SERVICE_ACCOUNT_FILE = 'service.json' 
 
-#Wrapper class for creating serial connection to arduino
-class SerialWrapper:
-
-    def __init__(self, device):
-        self.ser = serial.Serial(device, 115200)
-        self.ser.flushInput()
-    def sendData(self, data):
-        self.ser.write(data.encode())
-
 def main():
-    ser = SerialWrapper('/dev/ttyACM0') # Connect to arduino
     SPREADSHEET_IDS = '1xvvscFla3_cC6NXWc1wduA6EzomtyYkLeP8LMxQkGtc' # Spreadsheet ID for list of ids, names, and clubs
     SPREADSHEET_LOG = '1bpBm-T6QB6inECZl_hKLomBEZMoUAe5GaMM-yyHtoG4' # Spreadsheet ID for logging ids, names, and clubs
     RANGE_IDS = 'Form Responses 1!A2:D'
@@ -38,7 +27,7 @@ def main():
                 for x in values:
                     if (any(id in j for j in x)): # Checks if any ID in IDS variable match scanned ID
                         s = "Welcome %s to %s!" % (x[1], x[3]) # Output to arduino
-                        ser.sendData(s)
+                        print(s)
 
                         now = datetime.datetime.now().strftime('%m/%d/%Y %H:%M:%S') # Gets current time and formats
                         resource = {
