@@ -1,4 +1,4 @@
-from Adafruit_CharLCD import Adafruit_CharLCD
+#from Adafruit_CharLCD import Adafruit_CharLCD
 import datetime
 import re
 from googleapiclient.discovery import build
@@ -7,8 +7,9 @@ from google.oauth2 import service_account
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets'] # Read and write permissions for program
 SERVICE_ACCOUNT_FILE = 'service.json' 
 
+
 def main():
-    lcd = Adafruit_CharLCD(rs = 26, en=19, d4=13, d5=6, d6=5,d7=11,cols=16,lines=2)
+    #lcd = Adafruit_CharLCD(rs = 26, en=19, d4=13, d5=6, d6=5,d7=11,cols=16,lines=2)
     SPREADSHEET_IDS = '1OZGMLB5fagiBeAG8-FHYKJ7YbWZvw7fJonjZjkVyDYI' # Spreadsheet ID for list of ids, names, and clubs
     SPREADSHEET_LOG = '1bpBm-T6QB6inECZl_hKLomBEZMoUAe5GaMM-yyHtoG4' # Spreadsheet ID for logging ids, names, and clubs
     RANGE_IDS = 'Form Responses 1!A2:D'
@@ -29,9 +30,9 @@ def main():
                 for x in values:
                     if (any(id in j for j in x)): # Checks if any ID in IDS variable match scanned ID
                         s = "Welcome %s to %s!" % (x[1], x[3]) # Output to arduino
-                        lcd.clear()
-                        lcd.message(s)
-
+                        #lcd.clear()
+                        #lcd.message(s)
+                        print(s)
                         now = datetime.datetime.now().strftime('%m/%d/%Y %H:%M:%S') # Gets current time and formats
                         resource = {
                             "majorDimension": "COLUMNS",
