@@ -1,5 +1,5 @@
 import serial
-import time
+import datetime
 import re
 from googleapiclient.discovery import build
 from google.oauth2 import service_account
@@ -40,7 +40,7 @@ def main():
                         s = "Welcome %s to %s!" % (x[1], x[3]) # Output to arduino
                         #ser.sendData(s)
 
-                        now = time.strftime(f'%m/%d/%Y %H:%M:%S', time.localtime()) # Gets current time and formats
+                        now = datetime.datetime.now().strftime('%m/%d/%Y %H:%M:%S') # Gets current time and formats
                         resource = {
                             "majorDimension": "COLUMNS",
                             "values": [[now], [x[1]], [x[2]], [x[3]]] # Creates row object formatted as: Time, Name, ID, Club
