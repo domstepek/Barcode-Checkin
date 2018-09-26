@@ -1,16 +1,22 @@
-#from Adafruit_CharLCD import Adafruit_CharLCD
+from Adafruit_CharLCD import Adafruit_CharLCD
 import datetime
 import re
+from time import sleep
 from googleapiclient.discovery import build
 from google.oauth2 import service_account
 
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets'] # Read and write permissions for program
 SERVICE_ACCOUNT_FILE = 'service.json' 
 
+lcd = Adafruit_CharLCD(rs = 26, en=19, d4=13, d5=6, d6=5,d7=11,cols=16,lines=2)
+
+def scrollRight(l):
+    for x in range(0, l-1):
+        lcd.move_left()
+        sleep(.3)
 
 def main():
-    #lcd = Adafruit_CharLCD(rs = 26, en=19, d4=13, d5=6, d6=5,d7=11,cols=16,lines=2)
-    SPREADSHEET_IDS = '1OZGMLB5fagiBeAG8-FHYKJ7YbWZvw7fJonjZjkVyDYI' # Spreadsheet ID for list of ids, names, and clubs
+    SPREADSHEET_IDS = '1xvvscFla3_cC6NXWc1wduA6EzomtyYkLeP8LMxQkGtc' # Spreadsheet ID for list of ids, names, and clubs
     SPREADSHEET_LOG = '1bpBm-T6QB6inECZl_hKLomBEZMoUAe5GaMM-yyHtoG4' # Spreadsheet ID for logging ids, names, and clubs
     RANGE_IDS = 'Form Responses 1!A2:D'
     RANGE_LOG = 'Sheet1!A2:D'
@@ -29,10 +35,12 @@ def main():
             if (re.search("\d{7}$", id, flags=re.M) != None): # Verify the ID scanned contains school ID
                 for x in values:
                     if (any(id in j for j in x)): # Checks if any ID in IDS variable match scanned ID
-                        s = "Welcome %s to %s!" % (x[1], x[3]) # Output to arduino
-                        #lcd.clear()
-                        #lcd.message(s)
-                        print(s)
+                        s = "Welcome %s to %s!" % (x[1], x[3]) # Output to raspi
+                        lcd.clear()
+                        lcd.message(s)
+                        sleep(.5)
+                        scrollRight(len(s))
+
                         now = datetime.datetime.now().strftime('%m/%d/%Y %H:%M:%S') # Gets current time and formats
                         resource = {
                             "majorDimension": "COLUMNS",
@@ -45,6 +53,7 @@ def main():
                             body=resource,
                             valueInputOption="RAW"
                         ).execute() # Append new line to LOG sheet
+                        break
 
 if __name__ == '__main__':
     main()
